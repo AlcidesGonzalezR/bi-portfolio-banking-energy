@@ -1,0 +1,133 @@
+==========================================
+DAX MEASURES - BANKING SECTOR
+==========================================
+Autor: Alcides González
+Perfil: Business Intelligence Specialist
+Sector: Financiero (Banca)
+Fecha: Abril 2026
+
+==========================================
+📊 PORTFOLIO MEASURES
+==========================================
+
+// Total Portfolio - Valor total de la cartera
+Total Portfolio = SUM(FactTransactions[Amount])
+
+// Average Portfolio - Cartera promedio
+Avg Portfolio = AVERAGE(FactTransactions[Amount])
+
+// Transaction Count - Número de transacciones
+Transaction Count = COUNTROWS(FactTransactions)
+
+==========================================
+⚠️ RISK MEASURES
+==========================================
+
+// NPL Ratio (Non-Performing Loans) - Ratio de morosidad
+NPL Ratio = 
+DIVIDE(
+    CALCULATE([Total Portfolio], FactTransactions[Status] = "Default"),
+    [Total Portfolio]
+)
+
+// Portfolio at Risk (PAR > 30 days) - Cartera en riesgo > 30 días
+PAR 30 = 
+CALCULATE(
+    [Total Portfolio],
+    FactTransactions[DaysOverdue] >= 30
+)
+
+// PAR 90 - Cartera en riesgo > 90 días
+PAR 90 = 
+CALCULATE(
+    [Total Portfolio],
+    FactTransactions[DaysOverdue] >= 90
+)
+
+// Risk Coverage Ratio - Cobertura de riesgos
+Risk Coverage = 
+DIVIDE(
+    SUM(Provisions[TotalProvisions]),
+    [PAR 30]
+)
+
+==========================================
+💸 EFFICIENCY MEASURES
+==========================================
+
+// Efficiency Ratio - Ratio de eficiencia
+Efficiency Ratio = 
+DIVIDE(
+    SUM(Expenses[OperatingExpenses]),
+    SUM(Income[NetRevenue])
+)
+
+// ROE (Return on Equity) - Retorno sobre patrimonio
+ROE = 
+DIVIDE(
+    SUM(Income[NetProfit]),
+    SUM(BalanceSheet[Equity])
+)
+
+// ROA (Return on Assets) - Retorno sobre activos
+ROA = 
+DIVIDE(
+    SUM(Income[NetProfit]),
+    SUM(BalanceSheet[TotalAssets])
+)
+
+// NIM (Net Interest Margin) - Margen financiero neto
+NIM = 
+DIVIDE(
+    SUM(Income[NetInterestIncome]),
+    SUM(BalanceSheet[InterestEarningAssets])
+)
+
+==========================================
+💰 COLLECTIONS MEASURES
+==========================================
+
+// DSO (Days Sales Outstanding) - Días de ventas pendientes
+DSO = 
+DIVIDE(
+    SUM(AccountsReceivable[OutstandingBalance]),
+    [Total Portfolio] / 365
+)
+
+// Collection Efficiency - Eficiencia de cobranza
+Collection Efficiency = 
+DIVIDE(
+    SUM(Collections[AmountCollected]),
+    SUM(Collections[AmountDue])
+)
+
+// Recovery Rate - Tasa de recuperación
+Recovery Rate = 
+DIVIDE(
+    SUM(Recoveries[AmountRecovered]),
+    SUM(WriteOffs[TotalWriteOffs])
+)
+
+==========================================
+📈 GROWTH MEASURES
+==========================================
+
+// YoY Growth - Crecimiento año contra año
+YoY Growth = 
+VAR CurrentYear = [Total Portfolio]
+VAR PreviousYear = CALCULATE([Total Portfolio], SAMEPERIODLASTYEAR(DimDate[Date]))
+RETURN
+DIVIDE(CurrentYear - PreviousYear, PreviousYear)
+
+// MoM Growth - Crecimiento mes contra mes
+MoM Growth = 
+VAR CurrentMonth = [Total Portfolio]
+VAR PreviousMonth = CALCULATE([Total Portfolio], PREVIOUSMONTH(DimDate[Date]))
+RETURN
+DIVIDE(CurrentMonth - PreviousMonth, PreviousMonth)
+
+==========================================
+🎯 Autor: Alcides González
+📧 Business Intelligence Specialist
+🏦 25+ años en Banca y Energía
+==========================================
