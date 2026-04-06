@@ -129,5 +129,5 @@ DIVIDE(CurrentMonth - PreviousMonth, PreviousMonth)
 ==========================================
 🎯 Autor: Alcides González
 📧 Business Intelligence Specialist
-🏦 25+ años en Banca y Energía
+🏦 25+ años en Banca y Energía 
 ==========================================
